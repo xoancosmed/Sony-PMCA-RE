@@ -39,7 +39,7 @@ jobs:
       run: |
         dist/pmca-console* -h
     - name: Upload
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: ${{ runner.os }} binaries
         path: dist/*
@@ -47,6 +47,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
+        brew update && brew upgrade hub;
         tag="${GITHUB_REF##*/}"
         assets="$(find dist/* -exec echo -a {} \;)"
         hub release create $assets -m "$tag" "$tag" || hub release edit $assets -m "" "$tag"
